@@ -9,6 +9,8 @@ use App\Models\Technology;
 use Illuminate\Http\Request;
 use App\Functions\Helper;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProjectController extends Controller
 {
     /**
@@ -35,6 +37,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+
         // Valida i dati del modulo
         $validatedData = $request->validate([
             'title' => 'required|min:2|max:100',
@@ -42,6 +45,7 @@ class ProjectController extends Controller
             'type_id' => 'nullable|exists:types,id',
             'technologies' => 'array',
             'technologies.*' => 'exists:technologies,id',
+            'image' => 'nullable|image|max:2048',
         ],
         [
            'title.required' => 'Devi inserire il nome della Tecnologia',
@@ -51,8 +55,16 @@ class ProjectController extends Controller
            'type_id.exists' => 'La tipologia selezionata non è valida',
             'technologies.array' => 'Le tecnologie devono essere un array',
             'technologies.*.exists' => 'Una delle tecnologie selezionate non è valida',
+            'image.max' => 'L\'immagine deve essere inferiore a 2MB'
+
         ]);
 
+        if ($request->hasFile('image')) {
+            // Salva l'immagine nella directory di storage
+            $image_path = Storage::put('uploads', $request->file('image'));
+            // Aggiungi il percorso dell'immagine ai dati validati
+            $validatedData['image'] = $image_path;
+        }
 
         $exist = Project::where('title', $request->title)->first();
         if ($exist) {

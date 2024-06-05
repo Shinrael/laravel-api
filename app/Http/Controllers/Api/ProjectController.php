@@ -15,4 +15,14 @@ class ProjectController extends Controller
         return response()->json($projects);
     }
 
+    public function getTechnologies(){
+        $technologies = Technology::all();
+        return response()->json($technologies);
+    }
+
+    public function getTypes(){
+        $types = Type::all();
+        return response()->json($types);
+    }
+
 }

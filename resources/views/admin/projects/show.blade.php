@@ -24,6 +24,9 @@
         </p>
     @endif
 
+    <div class="my-5">
+        <img class="img-fluid" src="{{ asset('storage/' . $project->image) }}" alt="">
+    </div>
 
     <div class="my-5">
         <p>{{ $project->body }}</p>

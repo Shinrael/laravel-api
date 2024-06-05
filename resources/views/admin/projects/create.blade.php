@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-10">
             <!-- Form -->
-            <form action="{{ route('admin.projects.store') }}" method="POST">
+            <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Campo per il titolo -->
@@ -72,6 +72,12 @@
                             <label class="btn btn-outline-primary" for="technology_{{$technology->id}}">{{ $technology->title }}</label>
                         @endforeach
                     </div>
+                </div>
+
+                <!-- Campo per l'upload delle immagini -->
+                <div class="mb-3">
+                    <label for="image" class="form-label">Immagine</label>
+                    <input class="form-control" type="file" id="image" name="image">
                 </div>
 
                 <!-- Campo per il testo del progetto -->
